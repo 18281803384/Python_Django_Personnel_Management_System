@@ -1,0 +1,38 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>新增靓号</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li class="active"><a href="/pretty/list">靓号管理<span class="sr-only">(current)</span></a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">新增靓号</h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    {% for foo in form %}
+                        <div class="form-group">
+                            {{ foo.label }}: {{ foo }}
+                            <span style="color: red">{{ foo.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+

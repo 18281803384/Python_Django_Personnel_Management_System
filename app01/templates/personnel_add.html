@@ -1,0 +1,63 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>新增员工</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/department/list">部门管理</a></li>
+    <li class="active"><a href="/personnel/list">员工管理<span class="sr-only">(current)</span></a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">新增员工</h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputName2">员工姓名</label>
+                        <input name="personnel_name" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">所属部门</label>
+                        <select class="form-control" name="department" style="width: 500px">
+                            {% for department in department_info %}
+                                <option value="{{ department.id }}">{{ department.department_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">性别</label>
+                        <select class="form-control" name="gender" style="width: 500px">
+                            {% for gender in gender_choices %}
+                                <option value="{{ gender.0 }}">{{ gender.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">年龄</label>
+                        <input name="age" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">工资</label>
+                        <input name="salary" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

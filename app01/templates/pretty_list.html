@@ -1,0 +1,82 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>靓号管理</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li class="active"><a href="/pretty/list">靓号管理<span class="sr-only">(current)</span></a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div style="margin-bottom: 20px" class="clearfix">
+            <a class="btn btn-success" href="/pretty/add">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新增靓号
+            </a>
+
+            <div style="float: right; width: 300px">
+                <form method="get">
+                    <div class="input-group">
+                        <input name="search" type="text" class="form-control" placeholder="Search for..." value={{ search_data }}>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                靓号列表
+            </div>
+
+            {% if pretty_data.0 == null %}
+                <div class="panel-body">
+                    无数据!
+                </div>
+            {% else %}
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">序号</th>
+                        <th>手机号</th>
+                        <th>价格</th>
+                        <th>级别</th>
+                        <th>状态</th>
+                        <th style="width: 150px">创建时间</th>
+                        <th style="width: 150px">修改时间</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for pretty_info in pretty_data %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <td>{{ pretty_info.mobile }}</td>
+                            <td>{{ pretty_info.price }}</td>
+                            <td>{{ pretty_info.get_level_display }}</td>
+                            <td>{{ pretty_info.get_state_display }}</td>
+                            <td>{{ pretty_info.create_time }}</td>
+                            <td>{{ pretty_info.update_time }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="/pretty/edit/{{ pretty_info.id }}">编辑</a>
+                                <a class="btn btn-danger btn-xs" href="/pretty/delete/{{ pretty_info.id }}">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

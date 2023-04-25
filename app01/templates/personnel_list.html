@@ -1,0 +1,75 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>员工管理</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/department/list">部门管理</a></li>
+    <li class="active"><a href="/personnel/list">员工管理<span class="sr-only">(current)</span></a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div style="margin-bottom: 20px">
+            <a class="btn btn-success" href="/personnel/add">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新增员工
+            </a>
+            <a class="btn btn-success" href="/personnel/model/form/add">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新增员工基于ModelForm
+            </a>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                员工列表
+            </div>
+
+            {% if personnel_data.0 == null %}
+                <div class="panel-body">
+                    无数据!
+                </div>
+            {% else %}
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">序号</th>
+                        <th>员工姓名</th>
+                        <th>所属部门</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>工资</th>
+                        <th style="width: 150px">创建时间</th>
+                        <th style="width: 150px">修改时间</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for personnel_info in personnel_data %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <td>{{ personnel_info.personnel_name }}</td>
+                            <td>{{ personnel_info.department.department_name }}</td>
+                            <td>{{ personnel_info.get_gender_display }}</td>
+                            <td>{{ personnel_info.age }}</td>
+                            <td>{{ personnel_info.salary }}</td>
+                            <td>{{ personnel_info.create_time }}</td>
+                            <td>{{ personnel_info.update_time }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="/personnel/edit/{{ personnel_info.id }}">编辑</a>
+                                <a class="btn btn-danger btn-xs"  href="/personnel/delete/{{ personnel_info.id }}">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
