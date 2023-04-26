@@ -48,7 +48,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th style="width: 100px">序号</th>
+                        <th style="width: 100px">ID</th>
                         <th>手机号</th>
                         <th>价格</th>
                         <th>级别</th>
@@ -61,7 +61,7 @@
                     <tbody>
                     {% for pretty_info in pretty_data %}
                         <tr>
-                            <th>{{ forloop.counter }}</th>
+                            <th>{{ pretty_info.id }}</th>
                             <td>{{ pretty_info.mobile }}</td>
                             <td>{{ pretty_info.price }}</td>
                             <td>{{ pretty_info.get_level_display }}</td>
@@ -78,5 +78,11 @@
                 </table>
             {% endif %}
         </div>
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                {{ page_li_list_string }}
+            </ul>
+        </nav>
     </div>
 {% endblock %}

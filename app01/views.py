@@ -1,5 +1,7 @@
 import time
 from django.shortcuts import render, redirect
+from django.utils.safestring import mark_safe
+
 from app01 import models, public
 
 # Create your views here.
@@ -176,17 +178,96 @@ def personnel_delete(request, personnel_id):
 
 # ------- 靓号列表函数 ------- #
 def pretty_list(request):
-    # 创建一个空字典
+    # ------ 查询功能 start
     data_dict = {}
     # 获取get请求传来的数据
     search_data = request.GET.get('search', '')
     # 如果有数据，则添加至字典中
     if search_data:
         data_dict["mobile__contains"] = search_data
-    # 根据字典条件获取表中的数据，并以level字段数据降序排列，当字典为空时查询所有数据
-    pretty_data = models.Pretty.objects.filter(**data_dict).order_by('-level')
+    # ------ 查询功能 end
+
+    # ------ 分页功能 start
+    # 根据条件查询Pretty表的数据总条数
+    pretty_count = models.Pretty.objects.filter(**data_dict).all().count()
+    # 页面默认显示条数
+    default_num = 10
+    # divmod()函数取商和余
+    total_page, remain = divmod(pretty_count, default_num)
+    if remain != 0:
+        # 根据数据量计算出总页数
+        total_page += 1
+
+    # 获取get请求传入的页数
+    get_page = int(request.GET.get('page', '1'))
+    # 开始区间 = （请求页数 - 1）* 默认数量
+    start_num = (get_page - 1) * default_num
+    # 结束区间 = 请求页数 * 默认数量
+    end_num = get_page * default_num
+    # 计算出展示当前页的前5页和后5页
+    plus_page = 3
+    # 如果数据量比较少，没有到达前后页总数
+    if total_page <= (2 * plus_page) + 1:
+        start_page = 1
+        end_page = total_page
+    else:
+        # 如果请求页 <= 前后页数
+        if get_page <= plus_page:
+            start_page = 1
+            end_page = (2 * plus_page) + 1
+        else:
+            # 如果请求页 + 前后页数 > 总页数
+            if get_page + plus_page > total_page:
+                start_page = total_page - (2 * plus_page)
+                end_page = total_page
+            else:
+                start_page = get_page - plus_page
+                end_page = get_page + plus_page
+
+    # 创建一个空列表，用于存储循环生成li标签
+    page_li_list = []
+    # 首页标签
+    if get_page != 1:
+        first_page_li = '<li><a href="?page={}">首页</a></li>'.format(1)
+    else:
+        first_page_li = '<li class="previous disabled"><a href="#">首页</a></li>'
+    page_li_list.append(first_page_li)
+    # 上一页标签
+    if get_page > 1:
+        previous_page_li = '<li><a href="?page={}">上一页</a></li>'.format(get_page - 1)
+    else:
+        previous_page_li = '<li class="previous disabled"><a href="#">上一页</a></li>'
+    page_li_list.append(previous_page_li)
+    # 根据数据量循环生成li标签页数
+    for i in range(start_page, end_page + 1):
+        if i == get_page:
+            page_li = '<li class="active"><a href="?page={}">{}</a></li>'.format(i, i)
+        else:
+            page_li = '<li><a href="?page={}">{}</a></li>'.format(i, i)
+        page_li_list.append(page_li)
+    # 下一页标签
+    if get_page < total_page:
+        previous_page_li = '<li><a href="?page={}">下一页</a></li>'.format(get_page + 1)
+    else:
+        previous_page_li = '<li class="previous disabled"><a href="#">下一页</a></li>'
+    page_li_list.append(previous_page_li)
+    # 尾页标签
+    if get_page != total_page:
+        last_page_li = '<li><a href="?page={}">尾页</a></li>'.format(total_page)
+    else:
+        last_page_li = '<li class="previous disabled"><a href="#">尾页</a></li>'
+    page_li_list.append(last_page_li)
+
+    # 将list数据转化为string数据，并mark_safe函数让HTML可渲染
+    page_li_list_string = mark_safe("".join(page_li_list))
+
+    # ------ 分页功能 end
+
+    # 根据字典条件获取表中的数据，并以order_by进行排序，当字典为空时查询所有数据
+    pretty_data = models.Pretty.objects.filter(**data_dict).order_by('id')[start_num: end_num]
     # 传入数据并渲染页面显示
-    return render(request, 'pretty_list.html', {"pretty_data": pretty_data, "search_data":search_data})
+    return render(request, 'pretty_list.html',
+                  {"pretty_data": pretty_data, "search_data": search_data, "page_li_list_string": page_li_list_string})
 
 
 # ============= PrettyAddModelForm start ============= #
@@ -262,6 +343,7 @@ class PrettyEditModelForm(forms.ModelForm):
             raise ValidationError('手机号已存在！')
         # 验证通过，用户输入的值就返回
         return txt_mobile
+
 
 # ============= PrettyEditModelForm end ============= #
 
