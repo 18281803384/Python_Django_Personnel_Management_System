@@ -17,6 +17,8 @@ class Department(models.Model):
 # ------- 员工表 ------- #
 class Personnel(models.Model):
     personnel_name = models.CharField(verbose_name="员工姓名", max_length=36)
+    account = models.CharField(verbose_name="登录账号", max_length=36)
+    password = models.CharField(verbose_name="登录密码", max_length=36)
     # 部门表被删除时（生成的数据列为 department_id ）：
     # 1.与部门表关联，当部门数据删除时，与之关联部门数据的员工信息也删除
     department = models.ForeignKey(verbose_name="部门ID", to="Department", to_field="id", on_delete=models.CASCADE)
@@ -34,6 +36,7 @@ class Personnel(models.Model):
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
+# ------- 靓号表 ------- #
 class Pretty(models.Model):
     mobile = models.CharField(verbose_name="手机号", max_length=11)
     price = models.IntegerField(verbose_name="价格")
@@ -52,6 +55,14 @@ class Pretty(models.Model):
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
+
+# ------- 管理员表 ------- #
+class Admin(models.Model):
+    admin_name = models.CharField(verbose_name="管理员名称", max_length=36)
+    account = models.CharField(verbose_name="登录账号", max_length=36)
+    password = models.CharField(verbose_name="登录密码", max_length=36)
+    create_time = models.CharField(verbose_name="创建时间", max_length=19)
+    update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
 

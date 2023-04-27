@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block sr-only %}
+    <li><a href="/admin/list">管理员账户</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li class="active"><a href="/personnel/list">员工管理<span class="sr-only">(current)</span></a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
@@ -22,6 +23,16 @@
                     <div class="form-group">
                         <label for="exampleInputName2">员工姓名</label>
                         <input name="personnel_name" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">登录账号</label>
+                        <input name="account" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">登录密码</label>
+                        <input name="password" type="text" class="form-control" placeholder="请输入..." style="width: 500px">
                     </div>
 
                     <div class="form-group">

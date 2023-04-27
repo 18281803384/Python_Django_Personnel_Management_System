@@ -16,25 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01 import views
+from app01.views import Department,Personnel,Pretty,Admin
 
 urlpatterns = [
     # 部门管理
-    path('department/list', views.department_list),
-    path('department/add', views.department_add),
-    path('department/delete/<int:department_id>', views.department_delete),
-    path('department/edit/<int:department_id>', views.department_edit),
+    path('department/list', Department.department_list),
+    path('department/add', Department.department_add),
+    path('department/delete/<int:department_id>', Department.department_delete),
+    path('department/edit/<int:department_id>', Department.department_edit),
 
     # 员工管理
-    path('personnel/list', views.personnel_list),
-    path('personnel/add', views.personnel_add),
-    path('personnel/model/form/add', views.personnel_model_form_add),
-    path('personnel/edit/<int:personnel_id>', views.personnel_edit),
-    path('personnel/delete/<int:personnel_id>', views.personnel_delete),
+    path('personnel/list', Personnel.personnel_list),
+    path('personnel/add', Personnel.personnel_add),
+    path('personnel/model/form/add', Personnel.personnel_model_form_add),
+    path('personnel/edit/<int:personnel_id>', Personnel.personnel_edit),
+    path('personnel/delete/<int:personnel_id>', Personnel.personnel_delete),
 
     # 靓号管理
-    path('pretty/list', views.pretty_list),
-    path('pretty/add', views.pretty_add),
-    path('pretty/edit/<int:pretty_id>', views.pretty_edit),
-    path('pretty/delete/<int:pretty_id>', views.pretty_delete),
+    path('pretty/list', Pretty.pretty_list),
+    path('pretty/add', Pretty.pretty_add),
+    path('pretty/edit/<int:pretty_id>', Pretty.pretty_edit),
+    path('pretty/delete/<int:pretty_id>', Pretty.pretty_delete),
+
+    # 管理员账户管理
+    path('admin/list', Admin.admin_list),
+    path('admin/add', Admin.admin_add),
 ]

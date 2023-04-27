@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block sr-only %}
+    <li><a href="/admin/list">管理员账户</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li><a href="/personnel/list">员工管理</a></li>
     <li class="active"><a href="/pretty/list">靓号管理<span class="sr-only">(current)</span></a></li>
@@ -21,7 +22,8 @@
             <div style="float: right; width: 300px">
                 <form method="get">
                     <div class="input-group">
-                        <input name="search" type="text" class="form-control" placeholder="Search for..." value={{ search_data }}>
+                        <input name="search" type="text" class="form-control" placeholder="Search for..."
+                               value={{ search_data }}>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

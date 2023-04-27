@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block sr-only %}
+    <li><a href="/admin/list">管理员账户</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li class="active"><a href="/personnel/list">员工管理<span class="sr-only">(current)</span></a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
@@ -21,7 +22,7 @@
                     {% csrf_token %}
                     {% for foo in form %}
                         <div class="form-group">
-                            {{ foo.label }}: {{ foo }}
+                            <b>{{ foo.label }}:</b> {{ foo }}
                             <span style="color: red">{{ foo.errors.0 }}</span>
                         </div>
                     {% endfor %}
