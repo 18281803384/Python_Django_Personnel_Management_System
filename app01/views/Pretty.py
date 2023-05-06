@@ -54,6 +54,9 @@ def pretty_add(request):
 # ------- 靓号修改函数 ------- #
 def pretty_edit(request, pretty_id):
     row_pretty = models.Pretty.objects.filter(id=pretty_id).first()
+    if not row_pretty:
+        return render(request, 'error.html', {"message": '数据错误！'})
+
     if request.method == 'GET':
         form = PrettyEditModelForm(instance=row_pretty)
         return render(request, 'pretty_edit.html', {"form": form})

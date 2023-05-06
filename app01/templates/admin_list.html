@@ -53,12 +53,13 @@
                             <th>{{ forloop.counter }}</th>
                             <td>{{ admin_info.admin_name }}</td>
                             <td>{{ admin_info.account }}</td>
-                            <td>{{ admin_info.password }}</td>
+                            <td>******</td>
                             <td>{{ admin_info.create_time }}</td>
                             <td>{{ admin_info.update_time }}</td>
-                            <td>
-                                <a class="btn btn-primary btn-xs" href="#">编辑</a>
-                                <a class="btn btn-danger btn-xs"  href="#">删除</a>
+                            <td style="width: 150px">
+                                <a class="btn btn-primary btn-xs" href="/admin/edit/{{ admin_info.id }}">编辑</a>
+                                <a class="btn btn-danger btn-xs"  href="/admin/delete/{{ admin_info.id }}">删除</a>
+                                <a class="btn btn-warning btn-xs"  href="/admin/reset/{{ admin_info.id }}">重置密码</a>
                             </td>
                         </tr>
                     {% endfor %}

@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect
 from app01 import models
 
-from app01.utils.ModelForm import PersonnelModelForm
+from app01.utils.ModelForm import PersonnelModelForm,PrettyEditModelForm
 from app01.utils import Public_Function
 
 """ ++++++++++++++++++++++++++++++++++++++++++ 员工管理页面 ++++++++++++++++++++++++++++++++++++++++++ """
@@ -69,6 +69,8 @@ def personnel_model_form_add(request):
 # ------- 员工修改函数 ------- #
 def personnel_edit(request, personnel_id):
     row_personnel = models.Personnel.objects.filter(id=personnel_id).first()
+    if not row_personnel:
+        return render(request, 'error.html', {"message": '数据错误！'})
 
     if request.method == 'GET':
         # 实例化类

@@ -41,4 +41,7 @@ urlpatterns = [
     # 管理员账户管理
     path('admin/list', Admin.admin_list),
     path('admin/add', Admin.admin_add),
+    path('admin/edit/<int:admin_id>', Admin.admin_edit),
+    path('admin/delete/<int:admin_id>', Admin.admin_delete),
+    path('admin/reset/<int:admin_id>', Admin.admin_ps_reset),
 ]

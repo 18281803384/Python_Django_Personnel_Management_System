@@ -1,12 +1,14 @@
 # 作者: ZengCheng
 # 时间: 2023/4/27
 from django import forms
-from app01 import models
 from django.core.validators import RegexValidator, ValidationError
 
+from app01 import models
 from app01.utils.Bootstrap_ModelForm import Bootstrap_ModelForm
+from app01.utils.Encryption import md5
 
 
+# 员工新增&修改 ---- ModelForm
 class PersonnelModelForm(Bootstrap_ModelForm):
     personnel_name = forms.CharField(max_length=36, label="员工姓名")
 
@@ -23,6 +25,7 @@ class PersonnelModelForm(Bootstrap_ModelForm):
         return text_account
 
 
+# 靓号新增 ---- ModelForm
 class PrettyAddModelForm(Bootstrap_ModelForm):
     # 验证方式1
     mobile = forms.CharField(
@@ -46,6 +49,7 @@ class PrettyAddModelForm(Bootstrap_ModelForm):
         return txt_mobile
 
 
+# 靓号修改 ---- ModelForm
 class PrettyEditModelForm(Bootstrap_ModelForm):
     mobile = forms.CharField(
         label='手机号',
@@ -68,17 +72,63 @@ class PrettyEditModelForm(Bootstrap_ModelForm):
         return txt_mobile
 
 
-class AdminModelForm(Bootstrap_ModelForm):
-    admin_name = forms.CharField(max_length=36, label="管理员名称")
+# 管理员新增 ---- ModelForm
+class AdminAddModelForm(Bootstrap_ModelForm):
+    confirm_password = forms.CharField(
+        label="确认密码",
+        widget=forms.PasswordInput(render_value=True)
+    )
 
     class Meta:
         model = models.Admin
-        # 排除以下字段，渲染其它所有字段
-        exclude = ["create_time", "update_time"]
+        fields = ['admin_name', 'account', 'password', 'confirm_password']
+        widgets = {
+            'password': forms.PasswordInput(render_value=True)
+        }
 
-    def clean_account(self):
-        text_account = self.cleaned_data['account']
-        exists = models.Personnel.objects.filter(account=text_account).exists()
+    def clean_password(self):
+        # 获取POST请求提交时输入时的数据
+        password = self.cleaned_data.get('password')
+        return md5(password)
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get('password')
+        confirm_password = md5(self.cleaned_data.get('confirm_password'))
+        if password != confirm_password:
+            raise ValidationError('密码不一致！')
+        return confirm_password
+
+
+# 管理员修改 ---- ModelForm
+class AdminEditModelForm(Bootstrap_ModelForm):
+    class Meta:
+        model = models.Admin
+        fields = ['admin_name']
+
+
+# 管理员密码重置 ---- ModelForm
+class AdminPsResetModelForm(Bootstrap_ModelForm):
+    confirm_password = forms.CharField(
+        label="确认密码",
+        widget=forms.PasswordInput(render_value=True)
+    )
+
+    class Meta:
+        model = models.Admin
+        fields = ['account', 'password', 'confirm_password']
+        widgets = {
+            'password': forms.PasswordInput(render_value=True)
+        }
+
+    def clean_password(self):
+        # 获取POST请求提交时输入时的数据
+        password = self.cleaned_data.get('password')
+        # 对数据进行md5加密
+        md5_password = md5(password)
+        # 验证md5加密后数据是否跟指定id数据的password字段数据一样
+        exists = models.Admin.objects.filter(id=self.instance.pk, password=md5_password).exists()
+        # 如果一样，则抛出提示
         if exists:
-            raise ValidationError("该管理员已存在！")
-        return text_account
+            raise ValidationError('密码不能跟之前的一致！')
+        # 不一样则返回数据
+        return md5_password

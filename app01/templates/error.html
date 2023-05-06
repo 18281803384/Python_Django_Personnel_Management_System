@@ -1,0 +1,18 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>错误页面</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/admin/list">部门管理</a></li>
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+    </div>
+{% endblock %}
