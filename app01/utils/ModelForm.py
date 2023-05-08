@@ -8,8 +8,8 @@ from app01.utils.Bootstrap import Bootstrap_ModelForm
 from app01.utils.Encryption import md5
 
 
-# 员工新增&修改 ---- ModelForm
-class PersonnelModelForm(Bootstrap_ModelForm):
+# 员工修改 ---- ModelForm
+class PersonnelAddModelForm(Bootstrap_ModelForm):
     personnel_name = forms.CharField(max_length=36, label="员工姓名")
 
     class Meta:
@@ -23,6 +23,16 @@ class PersonnelModelForm(Bootstrap_ModelForm):
         if exists:
             raise ValidationError("该用户已存在！")
         return text_account
+
+
+# 员工修改 ---- ModelForm
+class PersonnelEditModelForm(Bootstrap_ModelForm):
+    personnel_name = forms.CharField(max_length=36, label="员工姓名")
+
+    class Meta:
+        model = models.Personnel
+        # 排除以下字段，渲染其它所有字段
+        exclude = ["create_time", "update_time"]
 
 
 # 靓号新增 ---- ModelForm

@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect
 from app01 import models
 
-from app01.utils.ModelForm import PersonnelModelForm,PrettyEditModelForm
+from app01.utils.ModelForm import PersonnelAddModelForm,PersonnelEditModelForm
 from app01.utils import Public_Function
 
 """ ++++++++++++++++++++++++++++++++++++++++++ 员工管理页面 ++++++++++++++++++++++++++++++++++++++++++ """
@@ -49,12 +49,12 @@ def personnel_model_form_add(request):
     # 如果请求协议为GET
     if request.method == 'GET':
         # 实例化类
-        form = PersonnelModelForm()
+        form = PersonnelAddModelForm()
         # 传入数据并渲染页面
         return render(request, 'personnel_model_form_add.html', {"form": form})
 
     # 用户提交的数据进行校验
-    form = PersonnelModelForm(data=request.POST)
+    form = PersonnelAddModelForm(data=request.POST)
     # 如果数据合法
     if form.is_valid():
         form.instance.create_time = Public_Function.format_time()
@@ -74,12 +74,12 @@ def personnel_edit(request, personnel_id):
 
     if request.method == 'GET':
         # 实例化类
-        form = PersonnelModelForm(instance=row_personnel)
+        form = PersonnelEditModelForm(instance=row_personnel)
         # 传入数据并渲染页面
         return render(request, 'personnel_edit.html', {"form": form})
 
     # instance指定数据
-    form = PersonnelModelForm(data=request.POST, instance=row_personnel)
+    form = PersonnelEditModelForm(data=request.POST, instance=row_personnel)
     if form.is_valid():
         # 额外保存另外的值
         form.instance.update_time = Public_Function.format_time()
