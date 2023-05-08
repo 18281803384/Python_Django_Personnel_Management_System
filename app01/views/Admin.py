@@ -8,6 +8,7 @@ from app01.utils.ModelForm import AdminAddModelForm,AdminEditModelForm,AdminPsRe
 from app01.utils import Public_Function
 
 
+# 管理员列表
 def admin_list(request):
     admin_data = models.Admin.objects.all().order_by('create_time')
 
@@ -24,6 +25,7 @@ def admin_list(request):
     return render(request, 'admin_list.html', context)
 
 
+# 管理员添加
 def admin_add(request):
     # 如果请求协议为GET
     if request.method == 'GET':
@@ -44,6 +46,7 @@ def admin_add(request):
     return render(request, 'admin_add.html', {"form": form})
 
 
+# 管理员修改
 def admin_edit(request, admin_id):
     # 查询该id的数据
     row_admin = models.Admin.objects.filter(id=admin_id).first()
@@ -71,11 +74,13 @@ def admin_edit(request, admin_id):
     return render(request, 'admin_edit.html', {"form": form})
 
 
+# 管理员删除
 def admin_delete(request, admin_id):
     models.Admin.objects.filter(id=admin_id).delete()
     return redirect('/admin/list')
 
 
+# 管理员密码重置
 def admin_ps_reset(request, admin_id):
     # 查询该id的数据
     row_admin = models.Admin.objects.filter(id=admin_id).first()

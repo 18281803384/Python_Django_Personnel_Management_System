@@ -4,7 +4,7 @@ from django import forms
 from django.core.validators import RegexValidator, ValidationError
 
 from app01 import models
-from app01.utils.Bootstrap_ModelForm import Bootstrap_ModelForm
+from app01.utils.Bootstrap import Bootstrap_ModelForm
 from app01.utils.Encryption import md5
 
 

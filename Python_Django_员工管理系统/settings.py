@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-8$9kma*dey10zx)redc_+6h4!*)31oz6_jvpk0&ti5f$(&4xbz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app01.middleware.auth.AuthMiddleware'
 ]
 
 ROOT_URLCONF = 'Python_Django_员工管理系统.urls'
