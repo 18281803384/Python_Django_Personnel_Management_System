@@ -7,14 +7,9 @@ from app01.utils.Encryption import md5
 
 
 class LoginForm(Bootstrap_Form):
-    account = forms.CharField(
-        label='用户名',
-        widget=forms.TextInput
-    )
-    password = forms.CharField(
-        label='密码',
-        widget=forms.PasswordInput(render_value=True)
-    )
+    account = forms.CharField( label='用户名',widget=forms.TextInput)
+    password = forms.CharField(label='密码', widget=forms.PasswordInput(render_value=True))
+    image_code = forms.CharField(label='图片验证码',widget=forms.TextInput)
 
     def clean_password(self):
         password = self.cleaned_data.get('password')

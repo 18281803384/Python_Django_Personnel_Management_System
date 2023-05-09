@@ -30,23 +30,26 @@
         <form method="POST" novalidate>
             {% csrf_token %}
             <div class="form-group">
-                {% for foo in form %}
-                    <label>{{ foo.label }}</label>
-                    {{ foo }}
-                    <p style="color: red">{{ foo.errors.0 }}</p>
-                {% endfor %}
+                <label>{{ form.account.label }}</label>
+                {{ form.account }}
+                <span style="color:red">{{ form.account.errors.0 }}</span>
             </div>
             <div class="form-group">
-                <label for="id_code">图片验证码</label>
+                <label>{{ form.password.label }}</label>
+                {{ form.password }}
+                <span style="color:red">{{ form.password.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                <label>{{ form.image_code.label }}</label>
                 <div class="row">
                     <div class="col-xs-7">
-                        <input type="text" name="code" class="form-control" placeholder="请输入验证码..." required="" id="id_code">
-                        <span style="color:red"></span>
+                        {{ form.image_code }}
                     </div>
                     <div class="col-xs-5">
-                        <img src="/image/code/" id="img_code" style="width:125px" alt="">
+                        <img src="/image/code/" id="img_code" style="width:120px" alt="">
                     </div>
                 </div>
+                <span style="color:red">{{ form.image_code.errors.0 }}</span>
             </div>
             <input type="submit" value="登 录" class="btn btn-primary">
         </form>
