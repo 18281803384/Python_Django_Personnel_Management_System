@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01.views import Department,Personnel,Pretty,Admin,Login
+from app01.views import Department,Personnel,Pretty,Admin,Login,Task
 
 urlpatterns = [
     # 部门管理
@@ -48,5 +48,8 @@ urlpatterns = [
     # 登录页面
     path('login/', Login.login),
     path('logout/', Login.logout),
-    path('image/code/', Login.image_code)
+    path('image/code/', Login.image_code),
+
+    # 任务管理
+    path('task/ajax', Task.ajax)
 ]
