@@ -19,10 +19,53 @@
                 <h3 class="panel-title" style="color:red;font-weight:bold">ajax 任务管理面板</h3>
             </div>
             <div class="panel-body">
-                <label>
-                    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-                </label>
+                <form id="form_add">
+                    <div class="clearfix">
+                        {% for foo in form %}
+                            <div class="col-xs-6">
+                                <div class="form-group" style="position: relative; margin-bottom: 20px">
+                                    <b>{{ foo.label }}:</b> {{ foo }}
+                                    <span class="error-msg" style="color: red; position: absolute"></span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-12">
+                        <button id='btn_task_add' type="button" class="btn btn-primary">提 交</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block ajax %}
+    <script type="text/javascript">
+        $(function () {
+            // 页面框架执行完成后，该函数自动执行
+            btn_task_add();
+        })
+
+        function btn_task_add() {
+            $("#btn_task_add").click(function () {
+                $(".error-msg").empty();
+
+                $.ajax({
+                    url: '/task/ajax',
+                    type: "post",
+                    data: $("#form_add").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status){
+                            alert("添加成功！");
+                        }else {
+                            $.each(data.error, function (name,error_data){
+                                $("#id_" + name).next().text(error_data[0]);
+                            })
+                        }
+                    }
+                })
+            })
+        }
+    </script>
 {% endblock %}

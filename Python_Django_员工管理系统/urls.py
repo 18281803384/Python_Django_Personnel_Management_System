@@ -51,5 +51,5 @@ urlpatterns = [
     path('image/code/', Login.image_code),
 
     # 任务管理
-    path('task/ajax', Task.ajax)
+    path('task/ajax', Task.task_mg),
 ]

@@ -31,7 +31,7 @@ class Personnel(models.Model):
     }
     gender = models.SmallIntegerField(verbose_name="性别", choices=gender_choices)
     age = models.IntegerField(verbose_name="年龄")
-    salary = models.DecimalField(verbose_name="薪资", max_digits=6, decimal_places=2, default=0)
+    salary = models.DecimalField(verbose_name="薪资", max_digits=10, decimal_places=2, default=0)
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
@@ -64,8 +64,24 @@ class Admin(models.Model):
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
+    def __str__(self):
+        return self.admin_name
 
 
+# ------- 任务管理表 ------- #
+class TaskManager(models.Model):
+    level_choices = {
+        (1, "重要"),
+        (2, "一般"),
+        (3, "临时")
+    }
+    level = models.SmallIntegerField(verbose_name='级别',choices=level_choices,default=3)
+    task_title = models.CharField(verbose_name='任务标题',max_length=36)
+    task_details = models.TextField(verbose_name='任务详情')
+    # 与任务负责人字段与管理员表关联，当管理员表删除后，该表数据字段置空
+    task_head = models.ForeignKey(verbose_name='任务负责人',to='Admin',to_field='id',on_delete=models.CASCADE)
+    create_time = models.CharField(verbose_name="创建时间", max_length=19)
+    update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
 
