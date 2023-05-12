@@ -11,13 +11,11 @@ class Bootstrap_ModelForm(forms.ModelForm):
             # 如果字段中有属性，则保留原来的属性，没有属性才增加
             if field.widget.attrs:
                 field.widget.attrs["class"] = "form-control"
-                field.widget.attrs["placeholder"] = '请输入...'
-                field.widget.attrs["style"] = "width: 500px"
+                field.widget.attrs["placeholder"] = field.label
             else:
                 field.widget.attrs = {
                     "class": "form-control",
-                    "placeholder": '请输入...',
-                    "style": "width: 500px"
+                    "placeholder": field.label
                 }
 
 

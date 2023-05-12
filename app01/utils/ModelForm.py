@@ -142,3 +142,20 @@ class AdminPsResetModelForm(Bootstrap_ModelForm):
             raise ValidationError('密码不能跟之前的一致！')
         # 不一样则返回数据
         return md5_password
+
+
+# 任务新增 ---- ModelForm
+class TaskManagerModelForm(Bootstrap_ModelForm):
+    class Meta:
+        model = models.TaskManager
+        fields = ['level','task_title','task_details','task_head']
+        widgets = {
+            "task_details": forms.TextInput
+        }
+
+
+# 订单新增 ---- ModelForm
+class OrderModerForm(Bootstrap_ModelForm):
+    class Meta:
+        model = models.Order
+        exclude = ['order_number']

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01.views import Department,Personnel,Pretty,Admin,Login,Task
+from app01.views import Department,Personnel,Pretty,Admin,Login,Task,Order
 
 urlpatterns = [
     # 部门管理
@@ -53,4 +53,8 @@ urlpatterns = [
     # 任务管理
     path('task/ajax', Task.task_list),
     path('task/ajax/add', Task.task_ajax_add),
+
+    # 订单管理
+    path('order/list', Order.order_list),
+    path('order/add', Order.order_add),
 ]

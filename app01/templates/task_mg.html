@@ -10,6 +10,7 @@
     <li><a href="/personnel/list">员工管理</a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
     <li class="active"><a href="/task/ajax">任务管理<span class="sr-only">(current)</span></a></li>
+    <li><a href="/order/list">订单管理</a></li>
 {% endblock %}
 
 {% block container %}
@@ -92,7 +93,7 @@
     </div>
 {% endblock %}
 
-{% block ajax %}
+{% block js %}
     <script type="text/javascript">
         $(function () {
             // 页面框架执行完成后，该函数自动执行

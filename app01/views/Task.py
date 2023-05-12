@@ -8,20 +8,12 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from app01 import models
-from app01.utils.Bootstrap import Bootstrap_ModelForm
+from app01.utils.ModelForm import TaskManagerModelForm
 from app01.utils.Paging_Module import Paging_Module
 from app01.utils.Public_Function import format_time
 
 
-class TaskManagerModelForm(Bootstrap_ModelForm):
-    class Meta:
-        model = models.TaskManager
-        fields = ['level','task_title','task_details','task_head']
-        widgets = {
-            "task_details": forms.TextInput
-        }
-
-
+# ------- 任务列表函数 ------- #
 @csrf_exempt
 def task_list(request):
     form = TaskManagerModelForm()
@@ -42,6 +34,7 @@ def task_list(request):
     return render(request,'task_mg.html',context)
 
 
+# ------- 任务新增函数 ------- #
 @csrf_exempt
 def task_ajax_add(request):
     # 如果请求协议为POST，则获取表单数据

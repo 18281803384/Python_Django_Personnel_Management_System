@@ -1,0 +1,97 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>订单管理</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/admin/list">部门管理</a></li>
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+    <li><a href="/task/ajax">任务管理</a></li>
+    <li class="active"><a href="/order/list">订单管理<span class="sr-only">(current)</span></a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <!-- 新建订单按钮 -->
+        <button id="order_add" type="button" class="btn btn-primary btn-lg">
+            新建订单
+        </button>
+
+        <!-- 新建订单对话框 -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">新建</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <div class="clearfix">
+                                {% for foo in form %}
+                                    <div class="col-xs-6">
+                                        <div class="form-group" style="position: relative; margin-bottom: 20px">
+                                            <b>{{ foo.label }}:</b> {{ foo }}
+                                            <span class="error-msg" style="color: red; position: absolute"></span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                        <button id="order_form_add" type="button" class="btn btn-primary">保 存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            // 页面框架执行完成后，该函数自动执行。
+            order_add_Event();
+            order_form_add_Event();
+        })
+
+        function order_add_Event() {
+            $("#order_add").click(function () {
+                // 点击新建订单按钮，显示对话框。
+                $('#myModal').modal('show');
+            });
+        }
+
+        function order_form_add_Event(){
+            // 清除错误信息
+            $(".error-msg").empty();
+
+            // 向后台发送ajax请求
+            $("#order_form_add").click(function (){
+                $.ajax({
+                    url: "/order/add",
+                    type: "post",
+                    data: $("#form").serialize(),
+                    dataType:"json",
+                    success: function (data) {
+                        if(data.status){
+                            alert("添加成功！");
+                        }else {
+                            // 循环 data.error 获取错误信息
+                            $.each(data.error, function(name,error_list){
+                                $("#id_" + name).next().text(error_list[0])
+                            })
+                        }
+                    }
+                })
+            });
+        }
+    </script>
+{% endblock %}
