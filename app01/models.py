@@ -94,3 +94,5 @@ class Order(models.Model):
     )
     trade_status = models.SmallIntegerField(verbose_name='商品状态',choices=trade_status_choices,default=1)
     trade_admin = models.ForeignKey(verbose_name='管理员',to='Admin',to_field='id',on_delete=models.CASCADE)
+    create_time = models.CharField(verbose_name="创建时间", max_length=19)
+    update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')

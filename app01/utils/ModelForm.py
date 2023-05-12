@@ -158,4 +158,5 @@ class TaskManagerModelForm(Bootstrap_ModelForm):
 class OrderModerForm(Bootstrap_ModelForm):
     class Meta:
         model = models.Order
-        exclude = ['order_number']
+        # 排除一下字段，渲染其它所有字段
+        exclude = ['order_number','trade_admin','create_time','update_time']

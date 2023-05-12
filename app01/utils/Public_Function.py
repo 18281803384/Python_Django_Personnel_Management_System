@@ -1,13 +1,14 @@
 # 作者: ZengCheng
 # 时间: 2023/4/21
 # 备注: 此处放着额外的公共方法
+from datetime import datetime
 import time
 import random
 
 from PIL import ImageDraw, ImageFont, ImageFilter, Image
 
 
-# 获取当前时间函数
+# ------- 获取当前时间函数 ------- #
 def format_time():
     times = time.time()
     local_time = time.localtime(times)
@@ -15,7 +16,16 @@ def format_time():
     return correct_time
 
 
-# 生成随机的图片验证码
+# ------- 根据时间生成订单号 ------- #
+def order_number():
+    # 生成当前时间并格式化
+    local_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    # 组合随机订单号
+    random_order_number = local_time + str(random.randint(1000,9999))
+    return random_order_number
+
+
+# ------- 生成随机的图片验证码 ------- #
 def check_code(width=120, height=30, char_length=5, font_file=r"app01/static/fonts/Monaco.ttf", font_size=28):
     code = []
     img = Image.new(mode='RGB', size=(width, height), color=(255, 255, 255))

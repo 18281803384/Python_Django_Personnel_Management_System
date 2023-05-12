@@ -33,7 +33,7 @@
                         <form id="form">
                             <div class="clearfix">
                                 {% for foo in form %}
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-12">
                                         <div class="form-group" style="position: relative; margin-bottom: 20px">
                                             <b>{{ foo.label }}:</b> {{ foo }}
                                             <span class="error-msg" style="color: red; position: absolute"></span>
@@ -82,7 +82,10 @@
                     dataType:"json",
                     success: function (data) {
                         if(data.status){
-                            alert("添加成功！");
+                            // 清空表单，$("#form")是JQuery对象 -> $("#form")[0] DOM对象
+                            $("#form")[0].reset();
+                            // 关闭对话框
+                            $('#myModal').modal('hide');
                         }else {
                             // 循环 data.error 获取错误信息
                             $.each(data.error, function(name,error_list){
