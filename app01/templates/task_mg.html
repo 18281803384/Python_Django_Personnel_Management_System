@@ -36,6 +36,59 @@
                 </form>
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                任务列表
+            </div>
+
+            {% if pretty_data.0 == null %}
+                <div class="panel-body">
+                    无数据!
+                </div>
+            {% else %}
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">ID</th>
+                        <th>任务标题</th>
+                        <th>任务详情</th>
+                        <th>级别</th>
+                        <th>任务负责人</th>
+                        <th style="width: 150px">创建时间</th>
+                        <th style="width: 150px">修改时间</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for pretty_info in pretty_data %}
+                        <tr>
+                            <th>{{ pretty_info.id }}</th>
+                            <td>{{ pretty_info.task_title }}</td>
+                            <td>{{ pretty_info.task_details }}</td>
+                            <td>{{ pretty_info.get_level_display }}</td>
+                            <td>{{ pretty_info.task_head.admin_name }}</td>
+                            <td>{{ pretty_info.create_time }}</td>
+                            <td>{{ pretty_info.update_time }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="#">编辑</a>
+                                <a class="btn btn-danger btn-xs" href="#">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                {{ page_li_list_string }}
+            </ul>
+        </nav>
     </div>
 {% endblock %}
 
@@ -51,13 +104,15 @@
                 $(".error-msg").empty();
 
                 $.ajax({
-                    url: '/task/ajax',
+                    url: '/task/ajax/add',
                     type: "post",
                     data: $("#form_add").serialize(),
                     dataType: "json",
                     success: function (data) {
                         if (data.status){
                             alert("添加成功！");
+                            // 页面刷新
+                            location.reload();
                         }else {
                             $.each(data.error, function (name,error_data){
                                 $("#id_" + name).next().text(error_data[0]);
