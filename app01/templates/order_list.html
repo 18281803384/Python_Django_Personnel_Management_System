@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block sr-only %}
-    <li><a href="/admin/list">部门管理</a></li>
+    <li><a href="/admin/list">管理员管理</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li><a href="/personnel/list">员工管理</a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
@@ -16,12 +16,69 @@
 {% block container %}
     <div class="container">
         <!-- 新建订单按钮 -->
-        <button id="order_add" type="button" class="btn btn-primary btn-lg">
+        <button id="order_add" type="button" class="btn btn-primary btn-lg" style="margin-bottom: 10px">
             新建订单
         </button>
 
+        <!-- 订单列表 -->
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                订单列表
+            </div>
+
+            {% if order_data.0 == null %}
+                <div class="panel-body">
+                    无数据!
+                </div>
+            {% else %}
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">ID</th>
+                        <th>订单编号</th>
+                        <th>商品名称</th>
+                        <th>商品价格</th>
+                        <th>商品状态</th>
+                        <th>管理员</th>
+                        <th style="width: 150px">创建时间</th>
+                        <th style="width: 150px">修改时间</th>
+                        <th style="width: 100px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_info in order_data %}
+                        <tr>
+                            <th>{{ order_info.id }}</th>
+                            <td>{{ order_info.order_number }}</td>
+                            <td>{{ order_info.trade_name }}</td>
+                            <td>{{ order_info.trade_price }}</td>
+                            <td>{{ order_info.get_trade_status_display }}</td>
+                            <td>{{ order_info.trade_admin.admin_name }}</td>
+                            <td>{{ order_info.create_time }}</td>
+                            <td>{{ order_info.update_time }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="#">编辑</a>
+                                <input type="button" class="btn btn-danger btn-xs btn_delete" value="删除">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+
+        <!-- 分页组件 -->
+        <nav aria-label="...">
+            <ul class="pagination">
+                {{ page_li_list_string }}
+            </ul>
+        </nav>
+
         <!-- 新建订单对话框 -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="OrderAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -51,49 +108,78 @@
             </div>
         </div>
 
+        <!-- 删除订单对话框 -->
+        <div class="modal fade" id="OrderDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4>Oh snap! You got an error!</h4>
+                    <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor
+                        ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+                    <p>
+                        <button type="button" class="btn btn-danger">Take this action</button>
+                        <button type="button" class="btn btn-default">Or do this</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript">
+
+
         $(function () {
             // 页面框架执行完成后，该函数自动执行。
             order_add_Event();
             order_form_add_Event();
+            btn_delete_Event();
         })
 
         function order_add_Event() {
             $("#order_add").click(function () {
                 // 点击新建订单按钮，显示对话框。
-                $('#myModal').modal('show');
+                $('#OrderAddModal').modal('show');
             });
         }
 
-        function order_form_add_Event(){
+        function order_form_add_Event() {
             // 清除错误信息
             $(".error-msg").empty();
 
             // 向后台发送ajax请求
-            $("#order_form_add").click(function (){
+            $("#order_form_add").click(function () {
                 $.ajax({
                     url: "/order/add",
                     type: "post",
                     data: $("#form").serialize(),
-                    dataType:"json",
+                    dataType: "json",
                     success: function (data) {
-                        if(data.status){
+                        if (data.status) {
                             // 清空表单，$("#form")是JQuery对象 -> $("#form")[0] DOM对象
                             $("#form")[0].reset();
                             // 关闭对话框
                             $('#myModal').modal('hide');
-                        }else {
+                            // 刷新页面
+                            location.reload();
+                        } else {
                             // 循环 data.error 获取错误信息
-                            $.each(data.error, function(name,error_list){
+                            $.each(data.error, function (name, error_list) {
                                 $("#id_" + name).next().text(error_list[0])
                             })
                         }
                     }
                 })
+            });
+        }
+
+        function btn_delete_Event() {
+            $(".btn_delete").click(function () {
+                // 点击删除订单按钮，显示对话框。
+                $('#OrderDeleteModal').modal('show');
             });
         }
     </script>

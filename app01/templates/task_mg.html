@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block sr-only %}
-    <li><a href="/admin/list">部门管理</a></li>
+    <li><a href="/admin/list">管理员账户</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li><a href="/personnel/list">员工管理</a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
@@ -45,7 +45,7 @@
                 任务列表
             </div>
 
-            {% if pretty_data.0 == null %}
+            {% if task_data.0 == null %}
                 <div class="panel-body">
                     无数据!
                 </div>
@@ -65,15 +65,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for pretty_info in pretty_data %}
+                    {% for task_info in task_data %}
                         <tr>
-                            <th>{{ pretty_info.id }}</th>
-                            <td>{{ pretty_info.task_title }}</td>
-                            <td>{{ pretty_info.task_details }}</td>
-                            <td>{{ pretty_info.get_level_display }}</td>
-                            <td>{{ pretty_info.task_head.admin_name }}</td>
-                            <td>{{ pretty_info.create_time }}</td>
-                            <td>{{ pretty_info.update_time }}</td>
+                            <th>{{ task_info.id }}</th>
+                            <td>{{ task_info.task_title }}</td>
+                            <td>{{ task_info.task_details }}</td>
+                            <td>{{ task_info.get_level_display }}</td>
+                            <td>{{ task_info.task_head.admin_name }}</td>
+                            <td>{{ task_info.create_time }}</td>
+                            <td>{{ task_info.update_time }}</td>
                             <td>
                                 <a class="btn btn-primary btn-xs" href="#">编辑</a>
                                 <a class="btn btn-danger btn-xs" href="#">删除</a>

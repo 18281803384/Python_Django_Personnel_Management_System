@@ -19,7 +19,7 @@ def task_list(request):
     form = TaskManagerModelForm()
 
     # 根据字典条件获取表中的数据，并以order_by进行排序，当字典为空时查询所有数据
-    task_data = models.TaskManager.objects.all().order_by('id')
+    task_data = models.TaskManager.objects.all().order_by('-id')
 
     # ------ 分页功能 start
     page_object = Paging_Module(request, task_data)
@@ -27,7 +27,7 @@ def task_list(request):
 
     context = {
         "form": form,
-        "pretty_data": page_object.page_queryset,
+        "task_data": page_object.page_queryset,
         "page_li_list_string": page_object.show_html()
     }
 
