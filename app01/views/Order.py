@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from app01 import models
 from app01.utils.ModelForm import OrderModerForm
 from app01.utils.Paging_Module import Paging_Module
-from app01.utils.Public_Function import order_number,format_time
+from app01.utils.Public_Function import order_number, format_time
 
 
 # ------- 订单列表函数 ------- #
@@ -45,3 +45,31 @@ def order_add(request):
         form.save()
         return JsonResponse({"status": True})
     return JsonResponse({"status": False, "error": form.errors})
+
+
+# ------- 订单删除函数 ------- #
+def order_delete(request):
+    # 获取需要删除的订单ID
+    delete_id = request.GET.get('delete_id')
+    # 查询该数据在数据库是否存在
+    exists = models.Order.objects.filter(id=delete_id).exists()
+    if not exists:
+        return JsonResponse({"status": False, "error": "删除失败，数据不存在！"})
+    # 删除该订单数据
+    models.Order.objects.filter(id=delete_id).delete()
+    return JsonResponse({"status": True})
+
+
+# ------- 订单详情函数 ------- #
+def order_detail(request):
+    # 获取需要编辑的订单ID
+    deit_id = request.GET.get('deit_id')
+    # 获取该ID数据指定字段，返回为dict格式
+    row_data = models.Order.objects.filter(id=deit_id).values('trade_name', 'trade_price', 'trade_status').first()
+    if not row_data:
+        return JsonResponse({"status": False, "error": "编辑失败，数据不存在！"})
+    result = {
+        "status": True,
+        "data": row_data
+    }
+    return JsonResponse(result)
