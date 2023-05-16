@@ -8,6 +8,9 @@ from django.utils.deprecation import MiddlewareMixin
 class AuthMiddleware(MiddlewareMixin):
     @staticmethod
     def process_request(request):
+        # if request.path_info == '/':
+        #     return redirect('/login/')
+
         # 如果用户访问的是登录页面则不需要判断session信息
         if request.path_info in ['/login/', '/image/code/']:
             return

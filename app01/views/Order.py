@@ -73,3 +73,25 @@ def order_detail(request):
         "data": row_data
     }
     return JsonResponse(result)
+
+
+@csrf_exempt
+# ------- 订单修改函数 ------- #
+def order_edit(request):
+    # 获取订单编辑ID
+    edit_id = request.GET.get('edit_id')
+
+    # 验证该订单ID是否存在
+    row_data = models.Order.objects.filter(id=edit_id).first()
+    # 如果不存在则提示出来
+    if not row_data:
+        return JsonResponse({"status": False, "data_error": "编辑失败，数据不存在！"})
+
+    form = OrderModerForm(data=request.POST,instance=row_data)
+    if form.is_valid():
+        # 添加修改时间
+        form.instance.update_time = format_time()
+        # 保存表单数据
+        form.save()
+        return JsonResponse({"status": True})
+    return JsonResponse({"status": False, "error": form.errors})

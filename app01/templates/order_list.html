@@ -129,6 +129,8 @@
     <script type="text/javascript">
         // 定义确认删除的ID
         let DELETE_ID;
+        // 定义确认编辑的ID
+        let EDIT_ID;
 
         $(function () {
             // 页面框架执行完成后，该函数自动执行。
@@ -141,6 +143,12 @@
 
         function bindBtnAddEvent() {
             $("#order_add").click(function () {
+                // 将编辑ID置为空
+                EDIT_ID = undefined;
+
+                // 清空对话框中的数据
+                $("#form")[0].reset();
+
                 // 改变对话框标题
                 $("#myModalLabel").text('新建');
 
@@ -153,17 +161,35 @@
             // 清除错误信息
             $(".error-msg").empty();
 
-            // 向后台发送ajax请求
+            // 为按钮绑定点击事件，并执行的函数
             $("#order_form_add").click(function () {
-                $.ajax({
-                    url: "/order/add",
-                    type: "post",
-                    data: $("#form").serialize(),
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.status) {
-                            // 清空表单，$("#form")是JQuery对象 -> $("#form")[0] DOM对象
-                            $("#form")[0].reset();
+                if (EDIT_ID) {
+                    // 向后台发送修改订单的ajax请求
+                    order_edit();
+                } else {
+                    // 向后台发送新增订单的ajax请求
+                    order_add();
+                }
+            });
+        }
+
+        function order_edit() {
+            $.ajax({
+                url: "/order/edit" + '?edit_id=' + EDIT_ID,
+                type: "post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status) {
+                        // 清空表单，$("#form")是JQuery对象 -> $("#form")[0] DOM对象
+                        $("#form")[0].reset();
+                        // 关闭对话框
+                        $('#myModal').modal('hide');
+                        // 刷新页面
+                        location.reload();
+                    } else {
+                        if (data.data_error) {
+                            alert(data.data_error)
                             // 关闭对话框
                             $('#myModal').modal('hide');
                             // 刷新页面
@@ -174,9 +200,35 @@
                                 $("#id_" + name).next().text(error_list[0])
                             })
                         }
+
                     }
-                })
-            });
+                }
+            })
+        }
+
+        function order_add() {
+            // 向后台发送新增订单的ajax请求
+            $.ajax({
+                url: "/order/add",
+                type: "post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status) {
+                        // 清空表单，$("#form")是JQuery对象 -> $("#form")[0] DOM对象
+                        $("#form")[0].reset();
+                        // 关闭对话框
+                        $('#myModal').modal('hide');
+                        // 刷新页面
+                        location.reload();
+                    } else {
+                        // 循环 data.error 获取错误信息
+                        $.each(data.error, function (name, error_list) {
+                            $("#id_" + name).next().text(error_list[0])
+                        })
+                    }
+                }
+            })
         }
 
         function bindBtnDeleteEvent() {
@@ -215,13 +267,7 @@
         function bindBtnEditEvent() {
             $(".btn_edit").click(function () {
                 // 获取当前编辑的ID
-                let EDIT_ID = $(this).attr('edit_id');
-
-                // 改变对话框标题
-                $("#myModalLabel").text('编辑');
-
-                // 点击编辑订单按钮，显示对话框。
-                $('#OrderAddEditModal').modal('show');
+                EDIT_ID = $(this).attr('edit_id');
 
                 // 利用ajax请求获取订单详情数据
                 $.ajax({
@@ -232,7 +278,23 @@
                         'deit_id': EDIT_ID
                     },
                     success: function (res) {
-    
+                        if (res.status) {
+                            // 清空对话框中的数据
+                            $("#form")[0].reset();
+
+                            // 循环获取数据将数据赋值到对话框中的标签中
+                            $.each(res.data, function (name, value) {
+                                $("#id_" + name).val(value);
+                            })
+
+                            // 改变对话框标题
+                            $("#myModalLabel").text('编辑');
+
+                            // 点击编辑订单按钮，显示对话框。
+                            $('#OrderAddEditModal').modal('show');
+                        } else {
+                            alert(res.error);
+                        }
                     }
                 })
             });
