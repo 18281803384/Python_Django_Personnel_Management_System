@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01.views import Department,Personnel,Pretty,Admin,Login,Task,Order
+from app01.views import Department,Personnel,Pretty,Admin,Login,Task,Order,Echarts
 
 urlpatterns = [
     # 部门管理
@@ -60,4 +60,7 @@ urlpatterns = [
     path('order/delete', Order.order_delete),
     path('order/detail', Order.order_detail),
     path('order/edit', Order.order_edit),
+
+    # 数据统计
+    path('echarts/list', Echarts.echarts_list),
 ]
