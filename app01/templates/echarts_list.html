@@ -21,7 +21,8 @@
                 <h3 class="panel-title">折线图</h3>
             </div>
             <div class="panel-body">
-                图
+                <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+                <div id="Line_Graph" style="width: 100%;height:400px;"></div>
             </div>
         </div>
 
@@ -43,7 +44,8 @@
                         <h3 class="panel-title">饼图</h3>
                     </div>
                     <div class="panel-body">
-                        图
+                        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+                        <div id="Pie_Graph" style="width: 100%;height:400px;"></div>
                     </div>
                 </div>
             </div>
@@ -56,6 +58,8 @@
         // 页面框架执行完成后，该函数自动执行。
         $(function () {
             InitBar();
+            InitLine();
+            InitPie();
         })
 
         // 初始化柱状图
@@ -66,28 +70,137 @@
             // 指定图表的配置项和数据
             let option = {
                 title: {
-                    text: 'ECharts 入门示例'
+                    text: '',
+                    left: "center"
                 },
                 tooltip: {},
                 legend: {
-                    data: ['销量']
+                    data: [],
+                    bottom: 0
                 },
                 xAxis: {
-                    data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+                    data: []
                 },
                 yAxis: {},
+                series: []
+            };
+
+            $.ajax({
+                url: '/echarts/bar_data',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        option.title.text = res.bar_data.title_text;
+                        option.legend.data = res.bar_data.legend_data;
+                        option.xAxis.data = res.bar_data.xAxis_data;
+                        option.series = res.bar_data.series
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            })
+        }
+
+        // 初始化折线图
+        function InitLine() {
+            // 基于准备好的dom，初始化echarts实例
+            let myChart = echarts.init(document.getElementById('Line_Graph'));
+
+            let option = {
+                title: {
+                    text: '',
+                    left: "center"
+                },
+                legend: {
+                    data: [],
+                    bottom: 0
+                },
+                xAxis: {
+                    type: 'category',
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: []
+            };
+
+            $.ajax({
+                url: '/echarts/line_data',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        option.title.text = res.line_data.title_text;
+                        option.legend.data = res.line_data.legend_data;
+                        option.xAxis.data = res.line_data.xAxis_data;
+                        option.series = res.line_data.series;
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            })
+        }
+
+        // 初始化饼状图
+        function InitPie() {
+            // 基于准备好的dom，初始化echarts实例
+            let myChart = echarts.init(document.getElementById('Pie_Graph'));
+
+            let option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
                 series: [
                     {
-                        name: '销量',
-                        type: 'bar',
-                        data: [5, 20, 36, 10, 10, 20]
+                        name: '安智杰',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: []
                     }
                 ]
             };
 
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-        }
+            $.ajax({
+                url: '/echarts/pie_data',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        option.series.data = res.pie_data.series_data
 
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            })
+        }
     </script>
 {% endblock %}
