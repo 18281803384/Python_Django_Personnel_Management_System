@@ -1,6 +1,6 @@
 # 作者: ZengCheng
 # 时间: 2023/4/27
-
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from app01 import models
 
@@ -64,4 +64,17 @@ def department_edit(request, department_id):
 
 # ------- 部门批量上传函数 ------- #
 def department_uploads(request):
-    pass
+    file_object = request.FILES.get('excel_file')
+
+    import openpyxl
+    # 获取工作簿对象
+    wb = openpyxl.load_workbook(file_object)
+    # 获取工作表对象
+    sheet1 = wb.worksheets[0]
+    # 循环获取每一行数据
+    for row in sheet1.iter_rows(min_row=2):
+        text = row[0].value
+        exists = models.Department.objects.filter(department_name=text).exists()
+        if not exists:
+            models.Department.objects.create(department_name=text, create_time=Public_Function.format_time())
+    return redirect('/department/list')
