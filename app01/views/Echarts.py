@@ -79,19 +79,16 @@ def echarts_line_data(request):
 # ------- 饼状图数据函数 ------- #
 def echarts_pie_data(request):
     series_data = [
-        {"value": 1048, "name": 'A'},
-        {"value": 735, "name": 'B'},
-        {"value": 580, "name": 'C'},
-        {"value": 484, "name": 'D'},
-        {"value": 300, "name": 'E'}
+        {"value": 1048, "name": '小米'},
+        {"value": 735, "name": 'OPPO'},
+        {"value": 580, "name": 'iPhone'},
+        {"value": 484, "name": '华为'},
+        {"value": 300, "name": 'VIVO'}
     ]
 
     result = {
         "status": True,
-        "pie_data": {
-            "series_data": series_data,
-            "series_data1": "1111"
-        }
+        "series_data": series_data
     }
 
     return JsonResponse(result)

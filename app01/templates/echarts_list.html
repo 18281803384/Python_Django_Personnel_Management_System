@@ -154,9 +154,13 @@
                 tooltip: {
                     trigger: 'item'
                 },
+                title: {
+                    text: 'ECharts Pie',
+                    left: "center"
+                },
                 legend: {
-                    top: '5%',
-                    left: 'center'
+                    left: 'center',
+                    bottom: 0
                 },
                 series: [
                     {
@@ -194,7 +198,7 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.status) {
-                        option.series.data = res.pie_data.series_data
+                        option.series[0].data = res.series_data;
 
                         // 使用刚指定的配置项和数据显示图表。
                         myChart.setOption(option);
