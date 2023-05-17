@@ -60,3 +60,8 @@ def department_edit(request, department_id):
                                                               update_time=Public_Function.format_time())
     # 重定向到部门列表页面
     return redirect('/department/list')
+
+
+# ------- 部门批量上传函数 ------- #
+def department_uploads(request):
+    pass

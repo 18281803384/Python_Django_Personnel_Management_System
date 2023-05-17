@@ -24,6 +24,7 @@ urlpatterns = [
     path('department/add', Department.department_add),
     path('department/delete/<int:department_id>', Department.department_delete),
     path('department/edit/<int:department_id>', Department.department_edit),
+    path('department/uploads', Department.department_uploads),
 
     # 员工管理
     path('personnel/list', Personnel.personnel_list),
