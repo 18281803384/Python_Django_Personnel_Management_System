@@ -84,6 +84,7 @@ class TaskManager(models.Model):
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
+# ------- 订单管理表 ------- #
 class Order(models.Model):
     order_number = models.CharField(verbose_name='订单号',max_length=64)
     trade_name = models.CharField(verbose_name='商品名称',max_length=32)
@@ -94,5 +95,14 @@ class Order(models.Model):
     )
     trade_status = models.SmallIntegerField(verbose_name='商品状态',choices=trade_status_choices,default=1)
     trade_admin = models.ForeignKey(verbose_name='管理员',to='Admin',to_field='id',on_delete=models.CASCADE)
+    create_time = models.CharField(verbose_name="创建时间", max_length=19)
+    update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
+
+
+# ------- form文件上传表 ------- #
+class Form_Uploads(models.Model):
+    name = models.CharField(verbose_name="姓名",max_length=64)
+    age = models.IntegerField(verbose_name="年龄")
+    head_sculpture = models.CharField(verbose_name="头像",max_length=255)
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')

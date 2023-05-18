@@ -1,28 +1,28 @@
 {% extends 'navigation_bar.html' %}
 
 {% block title %}
-    <title>管理员账户</title>
+    <title>Form文件上传</title>
 {% endblock %}
 
 {% block sr-only %}
-    <li class="active"><a href="/admin/list">管理员账户<span class="sr-only">(current)</span></a></li>
+    <li><a href="/admin/list">管理员账户</a></li>
     <li><a href="/department/list">部门管理</a></li>
     <li><a href="/personnel/list">员工管理</a></li>
     <li><a href="/pretty/list">靓号管理</a></li>
     <li><a href="/task/ajax">任务管理</a></li>
     <li><a href="/order/list">订单管理</a></li>
     <li><a href="/echarts/list">数据统计</a></li>
-    <li><a href="/uploads/list">From 文件上传</a></li>
+    <li class="active"><a href="/uploads/list">Form 文件上传<span class="sr-only">(current)</span></a></li>
 {% endblock %}
 
 {% block container %}
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">新增管理员</h3>
+                <h3 class="panel-title">Form 文件上传</h3>
             </div>
             <div class="panel-body">
-                <form method="POST" novalidate>
+                <form method="POST" novalidate enctype="multipart/form-data">
                     {% csrf_token %}
                     {% for foo in form %}
                         <div class="form-group">
@@ -36,8 +36,3 @@
         </div>
     </div>
 {% endblock %}
-
-
-
-
-

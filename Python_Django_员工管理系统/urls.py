@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01.views import Department, Personnel, Pretty, Admin, Login, Task, Order, Echarts
+from app01.views import Department, Personnel, Pretty, Admin, Login, Task, Order, Echarts, Uploads
 
 urlpatterns = [
     # 部门管理
@@ -67,4 +67,7 @@ urlpatterns = [
     path('echarts/bar_data', Echarts.echarts_bar_data),
     path('echarts/line_data', Echarts.echarts_line_data),
     path('echarts/pie_data', Echarts.echarts_pie_data),
+
+    # Form上传
+    path('uploads/list', Uploads.uploads_list),
 ]
