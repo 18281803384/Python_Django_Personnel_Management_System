@@ -49,13 +49,13 @@ def form_uploads_list(request):
 
 # ------- ModelForm 文件上传函数 ------- #
 def modelform_uploads_list(request):
+    query_all_data = models.ModelForm_Uploads.objects.all().order_by('-id')
+
+    # ------ 分页功能 start
+    page_object = Paging_Module(request, query_all_data)
+    # ------ 分页功能 end
+
     if request.method == 'GET':
-        query_all_data = models.ModelForm_Uploads.objects.all().order_by('-id')
-
-        # ------ 分页功能 start
-        page_object = Paging_Module(request, query_all_data)
-        # ------ 分页功能 end
-
         # 实例化ModelForm类
         form = ModelForm.upload_modelform()
 
@@ -72,5 +72,10 @@ def modelform_uploads_list(request):
         form.save()
         return redirect('/modelform/uploads/list')
 
+    context = {
+        "form": form,
+        "query_data": page_object.page_queryset,
+        "page_li_list_string": page_object.show_html()
+    }
     # 校验表单数据失败，则跳转页面并错误数据渲染
-    return render(request, 'modelform_uploads_list.html', {"form": form})
+    return render(request, 'modelform_uploads_list.html', context)
