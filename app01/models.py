@@ -75,34 +75,44 @@ class TaskManager(models.Model):
         (2, "一般"),
         (3, "临时")
     }
-    level = models.SmallIntegerField(verbose_name='级别',choices=level_choices,default=3)
-    task_title = models.CharField(verbose_name='任务标题',max_length=36)
+    level = models.SmallIntegerField(verbose_name='级别', choices=level_choices, default=3)
+    task_title = models.CharField(verbose_name='任务标题', max_length=36)
     task_details = models.TextField(verbose_name='任务详情')
     # 与任务负责人字段与管理员表关联，当管理员表删除后，该表数据字段置空
-    task_head = models.ForeignKey(verbose_name='任务负责人',to='Admin',to_field='id',on_delete=models.CASCADE)
+    task_head = models.ForeignKey(verbose_name='任务负责人', to='Admin', to_field='id', on_delete=models.CASCADE)
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
 # ------- 订单管理表 ------- #
 class Order(models.Model):
-    order_number = models.CharField(verbose_name='订单号',max_length=64)
-    trade_name = models.CharField(verbose_name='商品名称',max_length=32)
+    order_number = models.CharField(verbose_name='订单号', max_length=64)
+    trade_name = models.CharField(verbose_name='商品名称', max_length=32)
     trade_price = models.IntegerField(verbose_name='商品价格')
     trade_status_choices = (
-        (1,'待支付'),
-        (2,'已支付')
+        (1, '待支付'),
+        (2, '已支付')
     )
-    trade_status = models.SmallIntegerField(verbose_name='商品状态',choices=trade_status_choices,default=1)
-    trade_admin = models.ForeignKey(verbose_name='管理员',to='Admin',to_field='id',on_delete=models.CASCADE)
+    trade_status = models.SmallIntegerField(verbose_name='商品状态', choices=trade_status_choices, default=1)
+    trade_admin = models.ForeignKey(verbose_name='管理员', to='Admin', to_field='id', on_delete=models.CASCADE)
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
 
 
 # ------- form文件上传表 ------- #
 class Form_Uploads(models.Model):
-    name = models.CharField(verbose_name="姓名",max_length=64)
+    name = models.CharField(verbose_name="姓名", max_length=64)
     age = models.IntegerField(verbose_name="年龄")
-    head_sculpture = models.CharField(verbose_name="头像",max_length=255)
+    head_sculpture = models.CharField(verbose_name="头像", max_length=255)
+    create_time = models.CharField(verbose_name="创建时间", max_length=19)
+    update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')
+
+
+# ------- modelform文件上传表 ------- #
+class ModelForm_Uploads(models.Model):
+    city_name = models.CharField(verbose_name="城市名称", max_length=64)
+    city_population = models.IntegerField(verbose_name="城市人口")
+    # upload_to 指定media下的保存路径
+    city_logo = models.FileField(verbose_name="LOGO", max_length=255, upload_to='city/')
     create_time = models.CharField(verbose_name="创建时间", max_length=19)
     update_time = models.CharField(verbose_name="修改时间", max_length=19, null=True, blank=True, default='')

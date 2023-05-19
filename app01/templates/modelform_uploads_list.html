@@ -1,0 +1,87 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>Form文件上传</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/admin/list">管理员账户</a></li>
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+    <li><a href="/task/ajax">任务管理</a></li>
+    <li><a href="/order/list">订单管理</a></li>
+    <li><a href="/echarts/list">数据统计</a></li>
+    <li><a href="/form/uploads/list">Form 文件上传</a></li>
+    <li class="active"><a href="/modelform/uploads/list">ModelForm 文件上传<span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">ModelForm 文件上传</h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for foo in form %}
+                        <div class="form-group">
+                            <b>{{ foo.label }}:</b> {{ foo }}
+                            <span style="color: red">{{ foo.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                管理员列表
+            </div>
+
+            {% if query_data.0 == null %}
+                <!-- 当Department表没有数据时 -->
+                <div class="panel-body">
+                    无数据!
+                </div>
+            {% else %}
+                <!-- 当Department表有数据时 -->
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>城市名称</th>
+                        <th>城市人口</th>
+                        <th>LOGO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for query_info in query_data %}
+                        <tr>
+                            <td style="vertical-align: middle!important">{{ query_info.id }}</td>
+                            <td style="vertical-align: middle!important">{{ query_info.city_name }}</td>
+                            <td style="vertical-align: middle!important">{{ query_info.city_population }}</td>
+                            <td style="vertical-align: middle!important">
+                                <a href="/media/{{ query_info.city_logo }}" target="_blank"><img
+                                        src="/media/{{ query_info.city_logo }}" style="height:40px;width:60px"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                {{ page_li_list_string }}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

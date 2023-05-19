@@ -148,7 +148,7 @@ class AdminPsResetModelForm(Bootstrap_ModelForm):
 class TaskManagerModelForm(Bootstrap_ModelForm):
     class Meta:
         model = models.TaskManager
-        fields = ['level','task_title','task_details','task_head']
+        fields = ['level', 'task_title', 'task_details', 'task_head']
         widgets = {
             "task_details": forms.TextInput
         }
@@ -159,4 +159,14 @@ class OrderModerForm(Bootstrap_ModelForm):
     class Meta:
         model = models.Order
         # 排除一下字段，渲染其它所有字段
-        exclude = ['order_number','trade_admin','create_time','update_time']
+        exclude = ['order_number', 'trade_admin', 'create_time', 'update_time']
+
+
+# 文件上传 ---- ModelForm
+class upload_modelform(Bootstrap_ModelForm):
+    class Meta:
+        Bootstrap_ModelForm.bootstrap_exclude_field = ["city_logo"]
+
+        model = models.ModelForm_Uploads
+        # 排除一下字段，渲染其它所有字段
+        exclude = ["create_time", "update_time"]

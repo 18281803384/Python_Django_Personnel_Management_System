@@ -1,0 +1,39 @@
+{% extends 'navigation_bar.html' %}
+
+{% block title %}
+    <title>Form文件上传</title>
+{% endblock %}
+
+{% block sr-only %}
+    <li><a href="/admin/list">管理员账户</a></li>
+    <li><a href="/department/list">部门管理</a></li>
+    <li><a href="/personnel/list">员工管理</a></li>
+    <li><a href="/pretty/list">靓号管理</a></li>
+    <li><a href="/task/ajax">任务管理</a></li>
+    <li><a href="/order/list">订单管理</a></li>
+    <li><a href="/echarts/list">数据统计</a></li>
+    <li class="active"><a href="/form/uploads/list">Form 文件上传<span class="sr-only">(current)</span></a></li>
+    <li><a href="/modelform/uploads/list">ModelForm 文件上传</a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Form 文件上传</h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for foo in form %}
+                        <div class="form-group">
+                            <b>{{ foo.label }}:</b> {{ foo }}
+                            <span style="color: red">{{ foo.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

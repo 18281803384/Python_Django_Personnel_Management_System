@@ -15,10 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+
+from django.urls import path, re_path
+from django.views.static import serve
+from django.conf import settings
+
 from django.urls import path
 from app01.views import Department, Personnel, Pretty, Admin, Login, Task, Order, Echarts, Uploads
 
 urlpatterns = [
+    # media相关的路由配置
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+
     # 部门管理
     path('department/list', Department.department_list),
     path('department/add', Department.department_add),
@@ -69,5 +77,8 @@ urlpatterns = [
     path('echarts/pie_data', Echarts.echarts_pie_data),
 
     # Form上传
-    path('uploads/list', Uploads.uploads_list),
+    path('form/uploads/list', Uploads.form_uploads_list),
+
+    # ModelForm上传
+    path('modelform/uploads/list', Uploads.modelform_uploads_list),
 ]
